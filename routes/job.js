@@ -8,6 +8,6 @@ router.post('/createJob',jwtVerify, createJob);
 router.post('/editJob/:jobId',jwtVerify, editJob);
 router.get('/description/:jobId',job_description);
 router.get('/allJob',allJob);
-router.delete('/job/:id',deleteJob);
+router.delete('/job/:jobId',deleteJob);
 
 module.exports = router;

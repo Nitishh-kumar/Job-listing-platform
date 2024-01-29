@@ -113,9 +113,31 @@ exports.allJob = async (req, res) => {
         // above is for exact software developer,what if user type only developer,then use regular expression to handle
         // here i means case insensitive
         const title=req.query.title||"";
+        // const skills=req.query.skills||[];
+        const skills=req.query.skills||"";
+
+        // console.log(typeof skills);
+        // console.log(typeof JSON.parse(skills));
+
+        // now we are getting ,so convert into comma seprated value
+        const filterSkills=skills.split(",");
+
+        // here instead of const ,we have to use let because completely we are giving new object in filter
+        let filter={};
+
+        if(skills.length>0){
+            filter={ skills: {$in : [...filterSkills] } };
+        }
+
         const jobList=await Job.find(
-            {title: {$regex: title, $options: "i"}},
-            {companyName:1}
+            {
+                // here we are giving two filter,and here ',' comma works as a and clause,thats why its running,in skills it is taking empty array
+                title: {$regex: title, $options: "i"},
+                // skills:{ $in: [...skills] },
+                // this above is not working here
+                ...filter,
+            },
+            // {companyName:1}
         );
 
         // add filter in the find query with skills,homework
